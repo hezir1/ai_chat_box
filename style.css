@@ -1,0 +1,494 @@
+/* --- FLOATING BUTTON (bottom-right corner) --- */
+.chat-fab {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2aab7a, #1a8860);
+    /* CEMJC green */
+    box-shadow: 0 6px 24px rgba(42, 171, 122, 0.5);
+    cursor: pointer;
+    border: none;
+    z-index: 9999;
+    /* always on top */
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-fab:hover {
+    transform: scale(1.08);
+}
+
+.chat-fab svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+}
+
+/* Toggle icons: chat icon shows when closed, X shows when open */
+.chat-fab .icon-close {
+    display: none;
+}
+
+.chat-fab.open .icon-chat {
+    display: none;
+}
+
+.chat-fab.open .icon-close {
+    display: block;
+}
+
+/* --- RED NOTIFICATION DOT --- */
+.notif-dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    background: #ff4757;
+    border-radius: 50%;
+    border: 2px solid white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* --- TOOLTIP BUBBLE (above the button) --- */
+.chat-tooltip {
+    position: fixed;
+    bottom: 100px;
+    right: 28px;
+    background: white;
+    border-radius: 14px 14px 4px 14px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a3a3a;
+    z-index: 9998;
+    max-width: 220px;
+    line-height: 1.4;
+}
+
+/* --- CHAT WINDOW --- */
+.chat-window {
+    position: fixed;
+    bottom: 104px;
+    right: 28px;
+    width: 360px;
+    max-height: 560px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.18);
+    z-index: 9997;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    /* Hidden by default — animates open */
+    transform: scale(0.85) translateY(20px);
+    transform-origin: bottom right;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chat-window.open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* --- HEADER BAR --- */
+.chat-header {
+    background: linear-gradient(135deg, #2aab7a, #1a7a5a);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.chat-avatar {
+    width: 42px;
+    height: 42px;
+    background: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.chat-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    /* Makes the white background of the image transparent */
+}
+
+.chat-header-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+}
+
+.chat-header-status {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #7dffb3;
+    /* green = online */
+    display: inline-block;
+    margin-right: 4px;
+}
+
+/* --- TAB SWITCHER (Website vs Facebook) --- */
+.platform-switch {
+    display: flex;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.plat-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 7px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.plat-btn.active {
+    background: white;
+    color: #2aab7a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* --- PANEL CONTAINERS --- */
+#webPanel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    /* Critical for inner scrolling */
+}
+
+/* Facebook Panel (centered content) */
+.fb-panel {
+    display: none;
+    /* hidden until button clicked */
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.fb-panel.visible {
+    display: flex;
+}
+
+.fb-logo {
+    font-size: 52px;
+    margin-bottom: 12px;
+}
+
+.fb-panel h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.fb-panel p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.fb-btn {
+    background: #1877f2;
+    color: white;
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.fb-btn:hover {
+    transform: scale(1.05);
+}
+
+.fb-hours {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+}
+
+/* --- ONBOARDING FORM --- */
+.onboarding-form {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 24px;
+    gap: 15px;
+    background: #f8fafb;
+    flex: 1;
+    justify-content: center;
+}
+
+.onboarding-form h3 {
+    font-size: 20px;
+    color: #1a3a3a;
+    margin-bottom: 5px;
+}
+
+.onboarding-form p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.onboarding-form .input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.onboarding-form input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.onboarding-form input:focus {
+    border-color: #2aab7a;
+}
+
+.start-btn {
+    background: #2aab7a;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+.start-btn:hover {
+    background: #1a8860;
+}
+
+.start-btn:active {
+    transform: scale(0.98);
+}
+
+/* --- CHAT MESSAGES AREA --- */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding: 16px;
+    background: #f8fafb;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Bot messages align left, user messages align right */
+.msg.bot {
+    align-self: flex-start;
+    max-width: 85%;
+}
+
+.msg.user {
+    align-self: flex-end;
+    max-width: 85%;
+}
+
+.bot .msg-bubble {
+    background: white;
+    color: #1a1a1a;
+    border-radius: 16px 16px 16px 4px;
+    /* flat bottom-left */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.user .msg-bubble {
+    background: #2aab7a;
+    /* CEMJC green */
+    color: white;
+    border-radius: 16px 16px 4px 16px;
+    /* flat bottom-right */
+}
+
+.msg-bubble {
+    padding: 10px 14px;
+    font-size: 13.5px;
+    line-height: 1.5;
+}
+
+.msg-bubble a {
+    color: #1a8860;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.user .msg-bubble a {
+    color: white;
+}
+
+/* --- TYPING INDICATOR (three bouncing dots) --- */
+.typing {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 14px;
+    background: white;
+    border-radius: 16px 16px 16px 4px;
+    width: fit-content;
+}
+
+.typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ccc;
+    animation: bounce 1.2s infinite;
+}
+
+.typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-6px);
+    }
+}
+
+/* --- QUICK REPLY BUTTONS --- */
+.quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.qr-btn {
+    background: white;
+    border: 1.5px solid #2aab7a;
+    color: #2aab7a;
+    border-radius: 100px;
+    padding: 6px 13px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.qr-btn:hover {
+    background: #2aab7a;
+    color: white;
+}
+
+/* --- CUSTOM SCROLLBAR (optional for better look) --- */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* --- TEXT INPUT BAR --- */
+.chat-input-wrap {
+    padding: 12px 14px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    gap: 8px;
+    background: white;
+}
+
+.chat-input {
+    flex: 1;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 100px;
+    padding: 9px 16px;
+    font-size: 13px;
+    outline: none;
+}
+
+.chat-input:focus {
+    border-color: #2aab7a;
+}
+
+.send-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #2aab7a;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: white;
+}
